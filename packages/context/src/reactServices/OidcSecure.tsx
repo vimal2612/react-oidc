@@ -33,17 +33,17 @@ export const useOidcSecure = (
   isRequireAuthenticationInternal: typeof isRequireAuthentication,
   WrappedComponent: ComponentType
 ): ComponentType => {
-  const { isEnabled, oidcUser, authenticating } = useContext(AuthenticationContext);
+  const { isEnabled, oidcUser, authenticating, isLogout } = useContext(AuthenticationContext);
   useEffect(() => {
     oidcLogInternal.info('Protection : ', isEnabled);
-    if (isEnabled) {
+    if (isEnabled && !isLogout) {
       oidcLogInternal.info('Protected component mounted');
       authenticateUserInternal(userManager, location, history)();
     }
     return () => {
       oidcLogInternal.info('Protected component unmounted');
     };
-  }, [isEnabled, authenticateUserInternal, userManager, oidcLogInternal, location, history]);
+  }, [isEnabled, authenticateUserInternal, userManager, oidcLogInternal, location, history, isLogout]);
   const requiredAuth = useMemo(() => isRequireAuthenticationInternal(oidcUser, false) && isEnabled, [
     isEnabled,
     isRequireAuthenticationInternal,

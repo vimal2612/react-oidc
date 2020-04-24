@@ -9,6 +9,7 @@ export type oidcContext = {
   events: UserManagerEvents;
   authenticating: ComponentType;
   isLoading: boolean;
+  isLogout: boolean;
   userManager: UserManager;
   error: string;
 };
